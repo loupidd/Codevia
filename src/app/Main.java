@@ -19,10 +19,10 @@ public class Main {
         DailyChallengeService challengeService =  new DailyChallengeService();
 
         Scanner scanner = new Scanner(System.in);
-        User user = null;
+        User user;
 
         //Program Header
-        System.out.println("📚Welcome to SkillForge!");
+        System.out.println("📚Welcome to Codevia!");
         System.out.println("1.Register\n2.Login");
         System.out.print("Insert Your Choice here: ");
         int option = scanner.nextInt();

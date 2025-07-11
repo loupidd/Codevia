@@ -27,3 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Firebase Admin SDK ###
+Codevia Firebase Admin SDK.json

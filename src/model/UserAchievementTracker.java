@@ -10,9 +10,9 @@ public class UserAchievementTracker {
     private LocalDate lastDailyDate = null;
 
     public UserAchievementTracker() {
-        achievements.put("First Quiz", new Achievement("🎯 First Quiz", "Complete your first quiz"));
-        achievements.put("3-Day Streak", new Achievement("🔥 3-Day Streak", "Complete daily challenge 3 days in a row"));
-        achievements.put("Quiz Master", new Achievement("📚 Quiz Master", "Complete 5 quizzes total"));
+        achievements.put("First Quiz", new Achievement("first-quiz", "🎯 First Quiz", "Complete your first quiz", 0));
+        achievements.put("3-Day Streak", new Achievement("3-day-streak", "🔥 3-Day Streak", "Complete daily challenge 3 days in a row", 0));
+        achievements.put("Quiz Master", new Achievement("quiz-master", "📚 Quiz Master", "Complete 5 quizzes total", 0));
     }
 
     public void recordQuizCompleted() {

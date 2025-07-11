@@ -1,47 +1,96 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
-    //Private Class Declaration
+    private String userId;
     private String username;
+    private String email;
     private String password;
     private int experiencePoint;
     private int userLevel;
+    private List<String> unlockedSkills;
+    private List<String> achievements;
 
-    //Public Encapsulation
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    // Constructor
+    public User() {
+        this.unlockedSkills = new ArrayList<>();
+        this.achievements = new ArrayList<>();
         this.experiencePoint = 0;
         this.userLevel = 1;
     }
 
-    // Class - Get Method
-    public String getUsername() {
-        return username;
+    public User(String userId, String username, String email, String password) {
+        this();
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
-    public String getPassword() {
-        return password;
+    // Encapsulation - Getters and Setters
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public int getExperiencePoint() { return experiencePoint; }
+    public void setExperiencePoint(int experiencePoint) {
+        this.experiencePoint = experiencePoint;
+        updateLevel();
     }
 
-    public int getExperiencePoint() {
-        return experiencePoint;
+    public int getUserLevel() { return userLevel; }
+    public void setUserLevel(int userLevel) { this.userLevel = userLevel; }
+
+    public List<String> getUnlockedSkills() { return unlockedSkills; }
+    public void setUnlockedSkills(List<String> unlockedSkills) { this.unlockedSkills = unlockedSkills; }
+
+    public List<String> getAchievements() { return achievements; }
+    public void setAchievements(List<String> achievements) { this.achievements = achievements; }
+
+    // Methods
+    public void addExperience(int xp) {
+        this.experiencePoint += xp;
+        updateLevel();
     }
 
-    public int getUserLevel() {
-        return userLevel;
+    private void updateLevel() {
+        this.userLevel = (experiencePoint / 100) + 1;
     }
 
-    public void gainExperiencePoint(int amount){
-        this.experiencePoint += amount;
-        if (experiencePoint >= userLevel * 100) {
-            experiencePoint =0;
-            userLevel++;
-            System.out.println("You Have Leveled Up! You Are Now level " + userLevel);
+    public void unlockSkill(String skillName) {
+        if (!unlockedSkills.contains(skillName)) {
+            unlockedSkills.add(skillName);
         }
     }
-    private UserAchievementTracker achievementTracker;
 
+    public void addAchievement(String achievement) {
+        if (!achievements.contains(achievement)) {
+            achievements.add(achievement);
+        }
+    }
+
+    // Method expected by service classes
+    public void gainExperiencePoint(int xp) {
+        addExperience(xp);
+    }
+
+    // Achievement tracker field and methods
+    private UserAchievementTracker achievementTracker;
+    
+    public UserAchievementTracker getAchievementTracker() {
+        return achievementTracker;
+    }
+    
     public void setAchievementTracker(UserAchievementTracker tracker) {
         this.achievementTracker = tracker;
     }

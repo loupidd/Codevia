@@ -25,26 +25,26 @@ public class QuizService {
         // Quiz for "Java Basics"
         List<Question> javaQuestions = List.of(
                 new Question("What is the size of int in Java?",
-                        new String[]{"2 bytes", "4 bytes", "8 bytes"}, 1), // Correct: "4 bytes"
+                        Arrays.asList("2 bytes", "4 bytes", "8 bytes"), 1), // Correct: "4 bytes"
                 new Question("Which loop checks the condition *after* executing once?",
-                        new String[]{"for", "while", "do-while"}, 2) // Correct: "do-while"
+                        Arrays.asList("for", "while", "do-while"), 2) // Correct: "do-while"
         );
 
         // Quiz for "OOP"
         List<Question> oopQuestions = List.of(
                 new Question("What is inheritance?",
-                        new String[]{
+                        Arrays.asList(
                                 "Copying code from one class to another",
                                 "A class deriving properties from another", // Correct
                                 "Unrelated class sharing names"
-                        }, 1),
+                        ), 1),
                 new Question("Which keyword is used to inherit a class in Java?",
-                        new String[]{"inherits", "extends", "implements"}, 1) // Correct: "extends"
+                        Arrays.asList("inherits", "extends", "implements"), 1) // Correct: "extends"
         );
 
         // Map each quiz to its related skill
-        quizMap.put("Java Basics", new Quiz("Java Basics", javaQuestions));
-        quizMap.put("OOP", new Quiz("OOP", oopQuestions));
+        quizMap.put("Java Basics", new Quiz("java-basics", "Java Basics", javaQuestions, 70));
+        quizMap.put("OOP", new Quiz("oop", "OOP", oopQuestions, 70));
     }
 
     /**
@@ -99,6 +99,10 @@ public class QuizService {
                 " and earned " + earnedXp + " XP!");
 
         achievementService.quizCompleted();
+    }
+    
+    public Quiz getQuizBySkillName(String skillName) {
+        return quizMap.get(skillName);
     }
 
 }

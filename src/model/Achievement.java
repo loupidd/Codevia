@@ -1,29 +1,41 @@
 package model;
 
-public class Achievement {
+import interface_.Achievable;
+
+public class Achievement implements Achievable {
+    private String achievementId;
     private String name;
     private String description;
-    private boolean unlocked;
+    private int requiredXP;
+    private boolean isUnlocked;
 
-    public Achievement(String name, String description) {
+    public Achievement(String achievementId, String name, String description, int requiredXP) {
+        this.achievementId = achievementId;
         this.name = name;
         this.description = description;
-        this.unlocked = false;
+        this.requiredXP = requiredXP;
+        this.isUnlocked = false;
     }
 
-    public String getName() {
-        return name;
+    // Encapsulation
+    public String getAchievementId() { return achievementId; }
+    public String getName() { return name; }
+    public boolean isUnlocked() { return isUnlocked; }
+
+    // Interface implementation
+    @Override
+    public void unlock() {
+        this.isUnlocked = true;
+        System.out.println("Achievement unlocked: " + name);
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
-    public boolean isUnlocked() {
-        return unlocked;
-    }
-
-    public void unlock() {
-        this.unlocked = true;
+    @Override
+    public int getRequiredXP() {
+        return requiredXP;
     }
 }

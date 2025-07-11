@@ -1,36 +1,46 @@
 package model;
 
-public class Skill {
-    private String id;
-    private String name;
+import interface_.Learnable;
+
+public class Skill implements Learnable {
+    private String skillId;
+    private String skillName;
     private String description;
-    private boolean unlocked;
+    private int requiredXP;
+    private boolean isUnlocked;
+    private boolean isCompleted;
 
-    public Skill(String id, String name, String description){
-        this.id = id;
-        this.name = name;
+    // Constructor
+    public Skill(String skillId, String skillName, String description, int requiredXP) {
+        this.skillId = skillId;
+        this.skillName = skillName;
         this.description = description;
-        this.unlocked = false;
+        this.requiredXP = requiredXP;
+        this.isUnlocked = false;
+        this.isCompleted = false;
     }
 
-    //Class - Get Method
-    public String getName(){
-        return name;
+    // Encapsulation
+    public String getSkillId() { return skillId; }
+    public String getSkillName() { return skillName; }
+    public String getDescription() { return description; }
+    public int getRequiredXP() { return requiredXP; }
+    public boolean isUnlocked() { return isUnlocked; }
+    public void setUnlocked(boolean unlocked) { isUnlocked = unlocked; }
+
+    // Interface implementation
+    @Override
+    public void learn() {
+        System.out.println("Learning " + skillName + "...");
+        this.isCompleted = true;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public boolean isUnlocked() {
-        return unlocked;
-    }
-
-    public void unlock() {
-        this.unlocked = true;
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

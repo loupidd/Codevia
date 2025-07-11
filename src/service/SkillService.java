@@ -2,44 +2,80 @@ package service;
 
 import model.Skill;
 import model.User;
+import exception.SkillNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SkillService {
-    private List<Skill> skillList = new ArrayList<>();
-    //Array List of Skills Learned
+public class SkillService extends BaseService {
+    private List<Skill> skills;
+
     public SkillService() {
-        skillList.add(new Skill("s1", "Java Basics", "Learn variables, loops, and conditions."));
-        skillList.add(new Skill("s2", "OOP", "Learn classes, inheritance, and polymorphism."));
-        skillList.add(new Skill("s3", "File I/O", "Learn how to read and write files in Java."));
+        super();
+        this.skills = new ArrayList<>();
+        initializeSkills();
+    }
+
+    private void initializeSkills() {
+        skills.add(new Skill("1", "Java Basics", "Learn Java fundamentals", 0));
+        skills.add(new Skill("2", "OOP Concepts", "Object-Oriented Programming", 50));
+        skills.add(new Skill("3", "Data Structures", "Arrays, Lists, Maps", 100));
+        skills.add(new Skill("4", "Algorithms", "Sorting and Searching", 200));
+        skills.add(new Skill("5", "Database", "SQL and NoSQL databases", 300));
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("Skill Service - Managing learning skills and courses");
+        System.out.println("Available skills: " + skills.size());
     }
 
     public void showSkills() {
-        System.out.println("\n📘 Available Skills:");
-        for (Skill skill : skillList) {
+        System.out.println("\n📚 Available Skills:");
+        System.out.println("===================");
+        for (Skill skill : skills) {
             String status = skill.isUnlocked() ? "✅ Unlocked" : "🔒 Locked";
-            System.out.println("- " + skill.getName() + ": " + skill.getDescription() + " [" + status + "]");
+            System.out.println(skill.getSkillName() + " - " + skill.getDescription() +
+                    " (Required XP: " + skill.getRequiredXP() + ") " + status);
         }
     }
 
     public void unlockSkill(Scanner scanner, User user) {
-        System.out.println("\nEnter skill name to unlock:");
-        String name = scanner.nextLine();
+        System.out.print("Enter skill name to unlock: ");
+        String skillName = scanner.nextLine().trim();
 
-        for (Skill skill : skillList) {
-            if (skill.getName().equalsIgnoreCase(name)) {
-                if (skill.isUnlocked()) {
-                    System.out.println("✅ Skill already unlocked.");
-                } else {
-                    skill.unlock();
-                    user.gainExperiencePoint(50);
-                    System.out.println("🎉 You unlocked: " + skill.getName() + " and gained 50 XP!");
-                }
+        try {
+            Skill skill = findSkillByName(skillName);
+
+            if (skill.isUnlocked()) {
+                System.out.println("❌ Skill already unlocked!");
                 return;
             }
+
+            if (user.getExperiencePoint() < skill.getRequiredXP()) {
+                System.out.println("❌ Not enough XP! Required: " + skill.getRequiredXP() +
+                        ", You have: " + user.getExperiencePoint());
+                return;
+            }
+
+            skill.setUnlocked(true);
+            user.unlockSkill(skillName);
+            System.out.println("✅ Skill unlocked: " + skillName);
+
+        } catch (SkillNotFoundException e) {
+            System.out.println("❌ " + e.getMessage());
         }
-        System.out.println("❌ Skill not found.");
+    }
+
+    public Skill findSkillByName(String name) throws SkillNotFoundException {
+        return skills.stream()
+                .filter(skill -> skill.getSkillName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new SkillNotFoundException("Skill not found: " + name));
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
     }
 }
